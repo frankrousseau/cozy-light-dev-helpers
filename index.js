@@ -4,11 +4,12 @@ var pathHelpers = require('path');
 
 var configHelpers = {
   addApp: function (app, manifest) {
+    var config = module.exports.config;
+
     if(manifest.type === undefined) {
       manifest.type = "classic";
     }
 
-    var config = module.exports.config;
     config.apps[app] = {
       name: manifest.name,
       displayName: manifest.displayName,
@@ -21,11 +22,12 @@ var configHelpers = {
   },
 
   addPlugin: function (plugin, manifest) {
+    var config = module.exports.config;
+
     if(config.plugins === undefined) {
       config.plugins = {};
     };
 
-    var config = module.exports.config;
     config.plugins[plugin] = {
       name: manifest.name,
       displayName: manifest.displayName,
