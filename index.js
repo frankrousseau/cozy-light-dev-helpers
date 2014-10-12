@@ -60,7 +60,7 @@ var addPluginDev = function (path) {
   var target = pathHelpers.join(
       module.exports.home, 'node_modules', manifest.name);
   fs.symlinkSync(path, target);
-  console.log(app + ' installed. Enjoy!');
+  console.log(plugin + ' installed. Enjoy!');
 }
 
 
