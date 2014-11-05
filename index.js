@@ -4,7 +4,7 @@ var pathHelpers = require('path');
 
 var configHelpers = {
   addApp: function (app, manifest) {
-    var config = module.exports.config;
+    var config = module.config;
 
     if(manifest.type === undefined) {
       manifest.type = "classic";
@@ -18,11 +18,11 @@ var configHelpers = {
       type: manifest.type
     };
     fs.writeFileSync(
-      module.exports.configPath, JSON.stringify(config, null, 2));
+      module.configPath, JSON.stringify(config, null, 2));
   },
 
   addPlugin: function (plugin, manifest) {
-    var config = module.exports.config;
+    var config = module.config;
 
     if(config.plugins === undefined) {
       config.plugins = {};
@@ -35,7 +35,7 @@ var configHelpers = {
       description: manifest.description
     };
     fs.writeFileSync(
-      module.exports.configPath, JSON.stringify(config, null, 2));
+      module.configPath, JSON.stringify(config, null, 2));
   }
 }
 
@@ -46,7 +46,7 @@ var installDev = function (path) {
   console.log('Installing application ' + app + '...');
   configHelpers.addApp(path, manifest);
   var target = pathHelpers.join(
-      module.exports.home, 'node_modules', manifest.name);
+      module.home, 'node_modules', manifest.name);
   fs.symlinkSync(path, target);
   console.log(app + ' installed. Enjoy!');
 }
@@ -55,19 +55,18 @@ var installDev = function (path) {
 var addPluginDev = function (path) {
   var manifestPath = pathHelpers.join(path, 'package.json');
   var manifest = require(manifestPath);
-  console.log('Installing plugin ' + plugin + '...');
   configHelpers.addPlugin(path, manifest);
   var target = pathHelpers.join(
-      module.exports.home, 'node_modules', manifest.name);
+      module.home, 'node_modules', manifest.name);
   fs.symlinkSync(path, target);
-  console.log(plugin + ' installed. Enjoy!');
+  console.log(manifest.name + ' installed. Enjoy!');
 }
 
 
 module.exports.configure = function (options, config, program) {
-  module.exports.config = config;
-  module.exports.home = options.home;
-  module.exports.configPath = options.config_path;
+  module.config = config;
+  module.home = options.home;
+  module.configPath = options.configPath;
 
   program
     .command('install-dev <path>')
